@@ -79,6 +79,7 @@
     <None Include="app.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Envelope.h" />
     <ClInclude Include="ieee80.h" />
     <ClInclude Include="OscGenerator.h" />
     <ClInclude Include="Oscillator.h" />
@@ -92,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="Envelope.cpp" />
     <ClCompile Include="ieee80.cpp" />
     <ClCompile Include="OscGenerator.cpp" />
     <ClCompile Include="Oscillator.cpp" />

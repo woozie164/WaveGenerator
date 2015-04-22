@@ -5,6 +5,8 @@
 #include "OscGenerator.h"
 #include <time.h>
 
+#include "Envelope.h"
+
 /*
 	Main klass för WaveGenerator.
 
@@ -12,6 +14,9 @@
 */
 int main(int a, char *args[])
 {
+	Envelope env;
+	env.LoadEnvelope("expDecay.brk");
+
 	clock_t startTime = clock();
 
 	//Generera fyrkantsvåg, 880 Hz med 4 oscillatorer (harmonier).
