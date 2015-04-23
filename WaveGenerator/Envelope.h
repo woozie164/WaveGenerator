@@ -22,5 +22,7 @@ public:
 	~Envelope(void);
 
 	void LoadEnvelope(string filename);
+	void SetDuration(double duration);
+	void SetNumSamples(unsigned long numSamples);
 };
 

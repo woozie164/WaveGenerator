@@ -4,6 +4,7 @@
 #include "StdAfx.h"
 #include <vector>
 #include "Oscillator.h"
+#include "Envelope.h"
 
 /*
 	Skapar en syntetiserad ljudvåg av valfri typ och valfritt antal
@@ -40,6 +41,9 @@ public:
 	int generateToWav();
 
 	void setFilename(char* filename);
+
+	void ApplyAmpEnvelope(const Envelope & env);
+	void ApplyFreqEnvelope(const Envelope & env);
 };
 
 #endif
