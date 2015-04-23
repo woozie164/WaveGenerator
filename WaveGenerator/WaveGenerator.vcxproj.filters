@@ -44,6 +44,9 @@
     <ClInclude Include="Envelope.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="lerp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">
@@ -76,6 +79,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Envelope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lerp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

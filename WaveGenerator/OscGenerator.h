@@ -42,7 +42,7 @@ public:
 
 	void setFilename(char* filename);
 
-	void ApplyAmpEnvelope(const Envelope & env);
+	void ApplyAmpEnvelope(Envelope & env);
 	void ApplyFreqEnvelope(const Envelope & env);
 };
 

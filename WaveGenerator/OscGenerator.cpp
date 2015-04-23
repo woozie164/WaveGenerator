@@ -184,9 +184,10 @@ double OscGenerator::tick_sine(Oscillator* osc, double cFreq)
 	return val;
 }
 
-void OscGenerator::ApplyAmpEnvelope(const Envelope & env)
+void OscGenerator::ApplyAmpEnvelope(Envelope & env)
 {
-
+	env.SetDuration(duration);
+	env.SetNumSamples(nsamps);
 }
 
 void OscGenerator::ApplyFreqEnvelope(const Envelope & env)

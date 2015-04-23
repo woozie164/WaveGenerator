@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "Envelope.h"
 #include <fstream>
+#include "lerp.h"
 
 Envelope::Envelope(void)
 {
@@ -44,7 +45,7 @@ void Envelope::SetNumSamples(unsigned long numSamples)
 
 	unsigned long diff = numSamples / breakpoints.size();
 	int lastSample = 0;
-	for(unsigned long i = 0; i < breakpoints.size(); i += diff)
+	for(unsigned long i = 0; i < breakpoints.size(); i++)
 	{
 		// The data needed exists already, so just copy it over
 		if(i % diff == 0)
@@ -57,8 +58,8 @@ void Envelope::SetNumSamples(unsigned long numSamples)
 		else // data missing. Get it by using linear interpolation
 		{
 			// Interpolate betwwen these two
-			breakpoints[lastSample];
-			breakpoints[lastSample + diff];
+			float t = (breakpoints[lastSample + 1] - breakpoints[lastSample]) / something;
+			lerp(breakpoints[lastSample], breakpoints[lastSample + 1], t);
 			
 		}
 

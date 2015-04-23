@@ -81,6 +81,7 @@
   <ItemGroup>
     <ClInclude Include="Envelope.h" />
     <ClInclude Include="ieee80.h" />
+    <ClInclude Include="lerp.h" />
     <ClInclude Include="OscGenerator.h" />
     <ClInclude Include="Oscillator.h" />
     <ClInclude Include="portsf.h" />
@@ -95,6 +96,7 @@
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Envelope.cpp" />
     <ClCompile Include="ieee80.cpp" />
+    <ClCompile Include="lerp.cpp" />
     <ClCompile Include="OscGenerator.cpp" />
     <ClCompile Include="Oscillator.cpp" />
     <ClCompile Include="portsf.cpp" />
