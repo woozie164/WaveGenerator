@@ -30,21 +30,21 @@ void Envelope::LoadEnvelope(string filename)
 	}
 }
 
-void Envelope::SetDuration(int double)
+void Envelope::SetDuration(double seconds)
 {
 	for(int i = 0; i < breakpoints.size(); i++)
 	{
-		breakpoints.t *= seconds;
+		breakpoints[i].t *= seconds;
 	}
 }
 
-void Envelope::SetNumSamples(unsinged long numSamples)
+void Envelope::SetNumSamples(unsigned long numSamples)
 {
 	vector<Breakpoint> newBreakpoints(numSamples);
 
-	unsinged long diff = numSamples / breakpoints.size();
+	unsigned long diff = numSamples / breakpoints.size();
 	int lastSample = 0;
-	for(unsingedn long i = 0; i < breakpoints.size(); i += diff)
+	for(unsigned long i = 0; i < breakpoints.size(); i += diff)
 	{
 		// The data needed exists already, so just copy it over
 		if(i % diff == 0)

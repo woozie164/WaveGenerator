@@ -8,6 +8,8 @@ class Envelope
 		float t;
 		float v;
 
+		Breakpoint() {};
+
 		Breakpoint(float t, float v)
 		{
 			this->t = t;

@@ -189,7 +189,7 @@ void OscGenerator::ApplyAmpEnvelope(const Envelope & env)
 
 }
 
-void OscGeneratror::ApplyFreqEnvelope(const Envelope & env)
+void OscGenerator::ApplyFreqEnvelope(const Envelope & env)
 {
 
 }
