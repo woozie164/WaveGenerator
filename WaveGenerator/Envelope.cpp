@@ -68,7 +68,7 @@ void Envelope::SetNumSamples(unsigned int numSamples)
 		else // data missing. Get it by using linear interpolation
 		{
 			// Interpolate betwwen these two
-			float t = (i - lastSample) * ((breakpoints[lastSample + 1].t - breakpoints[lastSample].t) / (numSamples - breakpoints.size() - 1));
+			//float t = (i - lastSample) * ((breakpoints[lastSample + 1].t - breakpoints[lastSample].t) / (numSamples - breakpoints.size() - 1));
 			Breakpoint bkp;
 			bkp.t = lerp(breakpoints[lastSample].t, breakpoints[lastSample + 1].t, t);
 			bkp.v = lerp(breakpoints[lastSample].v, breakpoints[lastSample + 1].v, t);			
