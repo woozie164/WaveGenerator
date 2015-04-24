@@ -22,12 +22,13 @@ void Envelope::LoadEnvelope(string filename)
 		return;
 	}
 	while(true)
-	{
+	{		
 		float t, v;
+		if(f.eof()) break;
 		f >> t;
 		if(f.eof()) break;
 		f >> v;	
-		if(f.eof()) break;
+
 		breakpoints.push_back(Breakpoint(t, v));
 	}
 }
@@ -54,25 +55,24 @@ void Envelope::SetNumSamples(unsigned int numSamples)
 	// Check that numSamples / breakpoints.size() is not a fraction
 	assert((numSamples / breakpoints.size()) % 1 == 0);
 
-	int lastSample = 0;
-	for(unsigned long i = 0; i < breakpoints.size(); i++)
+	unsigned int lastSample = 0;
+	for(unsigned long i = 0; i < numSamples - 1; i++)
 	{
 		// The data needed exists already, so just copy it over
 		if(i % diff == 0)
 		{
-			lastSample = i;
-			newBreakpoints.push_back(breakpoints[i]);
-			//newBreakpoints.t = breakpoints[i].t;
-			//newBreakpoints[i].v = breakpoints[i].v;
+			newBreakpoints.push_back(breakpoints[lastSample++]);						
 		}
 		else // data missing. Get it by using linear interpolation
 		{
 			// Interpolate betwwen these two
 			//float t = (i - lastSample) * ((breakpoints[lastSample + 1].t - breakpoints[lastSample].t) / (numSamples - breakpoints.size() - 1));
+			float t = (i % diff) / (float)diff;
 			Breakpoint bkp;
-			bkp.t = lerp(breakpoints[lastSample].t, breakpoints[lastSample + 1].t, t);
-			bkp.v = lerp(breakpoints[lastSample].v, breakpoints[lastSample + 1].v, t);			
+			bkp.t = lerp(breakpoints[lastSample - 1].t, breakpoints[lastSample].t, t);
+			bkp.v = lerp(breakpoints[lastSample - 1].v, breakpoints[lastSample].v, t);			
 			newBreakpoints.push_back(bkp);
 		}
 	}
+	breakpoints = newBreakpoints;
 }
