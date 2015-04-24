@@ -25,6 +25,6 @@ public:
 
 	void LoadEnvelope(string filename);
 	void SetDuration(double duration);
-	void SetNumSamples(unsigned long numSamples);
+	void SetNumSamples(unsigned int numSamples);
 };
 

@@ -2,6 +2,7 @@
 #include "Envelope.h"
 #include <fstream>
 #include "lerp.h"
+#include <assert.h>
 
 Envelope::Envelope(void)
 {
@@ -33,17 +34,23 @@ void Envelope::LoadEnvelope(string filename)
 
 void Envelope::SetDuration(double seconds)
 {
-	for(int i = 0; i < breakpoints.size(); i++)
+	for(unsigned int i = 0; i < breakpoints.size(); i++)
 	{
 		breakpoints[i].t *= seconds;
 	}
 }
 
-void Envelope::SetNumSamples(unsigned long numSamples)
+void Envelope::SetNumSamples(unsigned int numSamples)
 {
-	vector<Breakpoint> newBreakpoints(numSamples);
+	vector<Breakpoint> newBreakpoints;
+	newBreakpoints.reserve(numSamples);
 
-	unsigned long diff = numSamples / breakpoints.size();
+	unsigned int diff = numSamples / breakpoints.size();
+	
+	// Currently, the code assumes that there's an integer ratio between
+	// the number of breakpoints and number of samples.
+	assert(diff >= 2);
+
 	int lastSample = 0;
 	for(unsigned long i = 0; i < breakpoints.size(); i++)
 	{
@@ -58,11 +65,11 @@ void Envelope::SetNumSamples(unsigned long numSamples)
 		else // data missing. Get it by using linear interpolation
 		{
 			// Interpolate betwwen these two
-			float t = (breakpoints[lastSample + 1] - breakpoints[lastSample]) / something;
-			lerp(breakpoints[lastSample], breakpoints[lastSample + 1], t);
-			
+			float t = (i - lastSample) * ((breakpoints[lastSample + 1].t - breakpoints[lastSample].t) / (numSamples - breakpoints.size() - 1));
+			Breakpoint bkp;
+			bkp.t = lerp(breakpoints[lastSample].t, breakpoints[lastSample + 1].t, t);
+			bkp.v = lerp(breakpoints[lastSample].v, breakpoints[lastSample + 1].v, t);			
+			newBreakpoints.push_back(bkp);
 		}
-
-
 	}
 }
