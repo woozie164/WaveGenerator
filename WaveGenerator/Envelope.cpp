@@ -49,7 +49,10 @@ void Envelope::SetNumSamples(unsigned int numSamples)
 	
 	// Currently, the code assumes that there's an integer ratio between
 	// the number of breakpoints and number of samples.
-	assert(diff >= 2);
+	assert(diff >= 1);
+	
+	// Check that numSamples / breakpoints.size() is not a fraction
+	assert((numSamples / breakpoints.size()) % 1 == 0);
 
 	int lastSample = 0;
 	for(unsigned long i = 0; i < breakpoints.size(); i++)
