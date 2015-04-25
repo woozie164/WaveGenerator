@@ -11,7 +11,13 @@
 	oscillatorer (harmonier).
 
 	author: Johan Hagelbäck (jhg@bth.se)
-*/
+*/	
+enum OSCILLATOR_TYPE
+{
+	TABLE_LOOKUP,
+	GENERATOR
+};
+
 class OscGenerator
 {
 private:
@@ -27,21 +33,24 @@ private:
 	double* oscamps;
 	double* oscfreqs;
 	int waveFormType;
-	Envelope * env;
+	Envelope * ampEnv; 
+	Envelope * freqEnv;
 	void init();
 
 	unsigned long nsamps;
 	double tick_sine(Oscillator* osc, double cFreq);
 	
+	OSCILLATOR_TYPE oscType;
 
 public:
-	OscGenerator(unsigned long sampleRate, double freq, double duration, double ampfac, int noOscillators, int waveFormType, char* filename, Envelope * env);
+	OscGenerator(unsigned long sampleRate, double freq, double duration, double ampfac, int noOscillators, int waveFormType, char* filename, Envelope * ampEnv, Envelope * freqEnv);
 	~OscGenerator();
 
 	int generateToText();
 	int generateToWav();
 
 	void setFilename(char* filename);
+	void SetOscillatorType(OSCILLATOR_TYPE oscType);
 
 	void ApplyAmpEnvelope(Envelope & env);
 	void ApplyFreqEnvelope(const Envelope & env);

@@ -23,9 +23,18 @@ int main(int a, char *args[])
 	clock_t startTime = clock();
 
 	//Generera fyrkantsvåg, 880 Hz med 4 oscillatorer (harmonier).
-	OscGenerator og = OscGenerator(44100, 880, 8, 0.8, 4, SQUARE, "square_ADSRenv.wav", &env2);	
-	//og.ApplyAmpEnvelope(env2);
+	OscGenerator og = OscGenerator(44100, 880, 8, 0.8, 4, SQUARE, "square_ampADSRenv.wav", &env2, nullptr);	
 	og.generateToWav();
+
+	OscGenerator og2 = OscGenerator(44100, 880, 8, 0.8, 4, SQUARE, "square_freqADSRenv.wav", nullptr, &env2);	
+	og2.generateToWav();
+
+	OscGenerator og3 = OscGenerator(44100, 880, 8, 0.8, 4, SQUARE, "square_ampfreqADSRenv.wav", &env2, &env2);	
+	og3.generateToWav();
+
+	OscGenerator og4 = OscGenerator(44100, 880, 8, 0.8, 4, SQUARE, "square_ampfreqADSRenv.wav", &env2, &env2);	
+	og4.SetOscillatorType(TABLE_LOOKUP);
+	og4.generateToWav();
 
 	clock_t endTime = clock();
 	double elapsed = (endTime - startTime) / (double)CLOCKS_PER_SEC;

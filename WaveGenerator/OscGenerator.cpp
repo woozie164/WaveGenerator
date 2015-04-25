@@ -3,7 +3,7 @@
 #include "portsf.h"
 #include <math.h>
 
-OscGenerator::OscGenerator(unsigned long sampleRate, double freq, double duration, double ampfac, int noOscillators, int waveFormType, char* filename, Envelope * env)
+OscGenerator::OscGenerator(unsigned long sampleRate, double freq, double duration, double ampfac, int noOscillators, int waveFormType, char* filename, Envelope * ampEnv, Envelope * freqEnv)
 {
 	this->sampleRate = sampleRate;
 	this->freq = freq;
@@ -23,12 +23,21 @@ OscGenerator::OscGenerator(unsigned long sampleRate, double freq, double duratio
 
 	init();
 
-	this->env = env;
-	if(env)
+	this->ampEnv = ampEnv;
+	if(ampEnv)
 	{
-		env->SetDuration(duration);
-		env->SetNumSamples(nsamps);
+		ampEnv->SetDuration(duration);
+		ampEnv->SetNumSamples(nsamps);
 	}	
+
+	this->freqEnv = freqEnv;
+	if(freqEnv)
+	{
+		freqEnv->SetDuration(duration);
+		freqEnv->SetNumSamples(nsamps);
+	}
+
+	this->oscType = GENERATOR;
 }
 
 void OscGenerator::init()
@@ -113,6 +122,7 @@ int OscGenerator::generateToText()
 	for (unsigned long i = 0; i < nsamps; i++)
 	{
 		double val = 0.0;
+		
 		for (int k = 0; k < (int)oscs.size(); k++)
 		{
 			val += oscamps[k] * tick_sine(oscs[k], freq*oscfreqs[k]);
@@ -148,16 +158,24 @@ int OscGenerator::generateToWav()
 	for (unsigned long i = 0; i < nsamps; i++)
 	{
 		double val = 0.0;
+
+		// Apply frequency envelope
+		float freq = this->freq;
+		if(freqEnv)
+		{
+			freq *= freqEnv->breakpoints[i].v;
+		}
+
 		for (int k = 0; k < (int)oscs.size(); k++)
 		{
-			val += oscamps[k] * tick_sine(oscs[k], freq*oscfreqs[k]);
+			val += oscamps[k] * tick_sine(oscs[k], freq*oscfreqs[k]);			
 		}
 		float samp = (float)(val * ampfac);
 
-		// Apply frequency envelope
-		if(env)
+		// Apply amplitude envelope
+		if(ampEnv)
 		{
-			samp *= env->breakpoints[i].v;
+			samp *= ampEnv->breakpoints[i].v;
 		}
 
 		float* frame = (float*) malloc(props.chans * sizeof(float));
@@ -175,9 +193,17 @@ double OscGenerator::tick_sine(Oscillator* osc, double cFreq)
 {
 	double val;
 
-	//Samp calculation
-	val = sin(osc->curPhase);
-	//
+		//Samp calculation
+	switch(oscType)
+	{
+	case GENERATOR:
+		val = sin(osc->curPhase);		
+		break;
+
+	case TABLE_LOOKUP:
+		
+		break;
+	}
 
 	if (osc->curFreq != cFreq)
 	{
@@ -197,6 +223,11 @@ double OscGenerator::tick_sine(Oscillator* osc, double cFreq)
 	return val;
 }
 
+double OscGenerator::sine_lookup(double cFreq)
+{
+
+}
+
 void OscGenerator::ApplyAmpEnvelope(Envelope & env)
 {
 	env.SetDuration(duration);
@@ -206,4 +237,9 @@ void OscGenerator::ApplyAmpEnvelope(Envelope & env)
 void OscGenerator::ApplyFreqEnvelope(const Envelope & env)
 {
 
+}
+
+void OscGenerator::SetOscillatorType(OSCILLATOR_TYPE oscType)
+{
+	this->oscType = oscType;
 }
