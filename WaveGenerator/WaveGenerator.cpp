@@ -32,7 +32,7 @@ int main(int a, char *args[])
 	OscGenerator og3 = OscGenerator(44100, 880, 8, 0.8, 4, SQUARE, "square_ampfreqADSRenv.wav", &env2, &env2);	
 	og3.generateToWav();
 
-	OscGenerator og4 = OscGenerator(44100, 880, 8, 0.8, 4, SQUARE, "square_ampfreqADSRenv.wav", &env2, &env2);	
+	OscGenerator og4 = OscGenerator(44100, 880, 8, 0.8, 4, SQUARE, "square_ampfreqADSRenvTableLookup.wav", &env2, &env2);	
 	og4.SetOscillatorType(TABLE_LOOKUP);
 	og4.generateToWav();
 
