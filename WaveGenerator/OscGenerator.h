@@ -27,6 +27,7 @@ private:
 	double* oscamps;
 	double* oscfreqs;
 	int waveFormType;
+	Envelope * env;
 	void init();
 
 	unsigned long nsamps;
@@ -34,7 +35,7 @@ private:
 	
 
 public:
-	OscGenerator(unsigned long sampleRate, double freq, double duration, double ampfac, int noOscillators, int waveFormType, char* filename);
+	OscGenerator(unsigned long sampleRate, double freq, double duration, double ampfac, int noOscillators, int waveFormType, char* filename, Envelope * env);
 	~OscGenerator();
 
 	int generateToText();

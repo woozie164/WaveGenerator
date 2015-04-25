@@ -3,7 +3,7 @@
 #include "portsf.h"
 #include <math.h>
 
-OscGenerator::OscGenerator(unsigned long sampleRate, double freq, double duration, double ampfac, int noOscillators, int waveFormType, char* filename)
+OscGenerator::OscGenerator(unsigned long sampleRate, double freq, double duration, double ampfac, int noOscillators, int waveFormType, char* filename, Envelope * env)
 {
 	this->sampleRate = sampleRate;
 	this->freq = freq;
@@ -22,6 +22,13 @@ OscGenerator::OscGenerator(unsigned long sampleRate, double freq, double duratio
 	nsamps = (unsigned long)(duration * sampleRate);
 
 	init();
+
+	this->env = env;
+	if(env)
+	{
+		env->SetDuration(duration);
+		env->SetNumSamples(nsamps);
+	}	
 }
 
 void OscGenerator::init()
@@ -147,6 +154,12 @@ int OscGenerator::generateToWav()
 		}
 		float samp = (float)(val * ampfac);
 
+		// Apply frequency envelope
+		if(env)
+		{
+			samp *= env->breakpoints[i].v;
+		}
+
 		float* frame = (float*) malloc(props.chans * sizeof(float));
 		frame[0] = samp;
 		psf.psf_sndWriteFloatFrames(ofd, frame, 1);
@@ -188,7 +201,6 @@ void OscGenerator::ApplyAmpEnvelope(Envelope & env)
 {
 	env.SetDuration(duration);
 	env.SetNumSamples(nsamps);
-	//env.SetNumSamples(402);
 }
 
 void OscGenerator::ApplyFreqEnvelope(const Envelope & env)
