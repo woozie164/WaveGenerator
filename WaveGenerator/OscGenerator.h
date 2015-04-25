@@ -35,11 +35,12 @@ private:
 	int waveFormType;
 	Envelope * ampEnv; 
 	Envelope * freqEnv;
+	vector<double> sineTable;
 	void init();
 
 	unsigned long nsamps;
 	double tick_sine(Oscillator* osc, double cFreq);
-	
+	double OscGenerator::sine_lookup(double curPhase);
 	OSCILLATOR_TYPE oscType;
 
 public:

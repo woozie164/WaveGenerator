@@ -2,6 +2,7 @@
 #include "OscGenerator.h"
 #include "portsf.h"
 #include <math.h>
+#include "lerp.h"
 
 OscGenerator::OscGenerator(unsigned long sampleRate, double freq, double duration, double ampfac, int noOscillators, int waveFormType, char* filename, Envelope * ampEnv, Envelope * freqEnv)
 {
@@ -38,6 +39,14 @@ OscGenerator::OscGenerator(unsigned long sampleRate, double freq, double duratio
 	}
 
 	this->oscType = GENERATOR;
+
+	unsigned int tableSize = 1024 * 2;
+	sineTable.reserve(tableSize);
+	double step = TWOPI / tableSize;
+	for(unsigned int i = 0; i < tableSize; i++)
+	{
+		sineTable.push_back(sin(step * i));
+	}
 }
 
 void OscGenerator::init()
@@ -193,7 +202,7 @@ double OscGenerator::tick_sine(Oscillator* osc, double cFreq)
 {
 	double val;
 
-		//Samp calculation
+	//Samp calculation
 	switch(oscType)
 	{
 	case GENERATOR:
@@ -201,7 +210,7 @@ double OscGenerator::tick_sine(Oscillator* osc, double cFreq)
 		break;
 
 	case TABLE_LOOKUP:
-		
+		val = sine_lookup(osc->curPhase);
 		break;
 	}
 
@@ -223,9 +232,14 @@ double OscGenerator::tick_sine(Oscillator* osc, double cFreq)
 	return val;
 }
 
-double OscGenerator::sine_lookup(double cFreq)
+double OscGenerator::sine_lookup(double curPhase)
 {
-
+	int i = (int)curPhase;
+	int inext = i + 1;
+	if(inext >= sineTable.size())
+		inext -= sineTable.size();
+	double frac = curPhase - i;
+	return lerp(sineTable[i], sineTable[inext], frac);	
 }
 
 void OscGenerator::ApplyAmpEnvelope(Envelope & env)

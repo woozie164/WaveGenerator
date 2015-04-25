@@ -36,6 +36,10 @@ int main(int a, char *args[])
 	og4.SetOscillatorType(TABLE_LOOKUP);
 	og4.generateToWav();
 
+	OscGenerator og5 = OscGenerator(44100, 880, 8, 0.8, 4, TRI, "tri_ampfreqADSRenvTableLookup.wav", &env2, &env2);	
+	og5.SetOscillatorType(TABLE_LOOKUP);
+	og5.generateToWav();
+
 	clock_t endTime = clock();
 	double elapsed = (endTime - startTime) / (double)CLOCKS_PER_SEC;
 	cout << "Elapsed: " << elapsed << " sec" << endl;
