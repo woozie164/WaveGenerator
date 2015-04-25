@@ -17,7 +17,6 @@ int main(int a, char *args[])
 	Envelope env;
 	env.LoadEnvelope("expDecay.brk");
 
-	// Doesn't read the final line
 	Envelope env2;
 	env2.LoadEnvelope("ADSRenvelope.brk");
 

@@ -35,6 +35,8 @@ void Envelope::LoadEnvelope(string filename)
 
 void Envelope::SetDuration(double seconds)
 {
+	double envDuration = breakpoints[breakpoints.size() - 1].t;
+	seconds /= envDuration;
 	for(unsigned int i = 0; i < breakpoints.size(); i++)
 	{
 		breakpoints[i].t *= seconds;
@@ -46,7 +48,7 @@ void Envelope::SetNumSamples(unsigned int numSamples)
 	vector<Breakpoint> newBreakpoints;
 	newBreakpoints.reserve(numSamples);
 
-	unsigned int diff = numSamples / breakpoints.size();
+	unsigned int diff = numSamples / (breakpoints.size() - 1);
 	
 	// Currently, the code assumes that there's an integer ratio between
 	// the number of breakpoints and number of samples.
@@ -56,7 +58,7 @@ void Envelope::SetNumSamples(unsigned int numSamples)
 	assert((numSamples / breakpoints.size()) % 1 == 0);
 
 	unsigned int lastSample = 0;
-	for(unsigned long i = 0; i < numSamples - 1; i++)
+	for(unsigned long i = 0; i < numSamples; i++)
 	{
 		// The data needed exists already, so just copy it over
 		if(i % diff == 0)
